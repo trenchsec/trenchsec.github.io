@@ -563,18 +563,60 @@ const categories = ["All", "Profile", "Projects", "Certifications", "Achievement
 
   /* Responsive */
   @media (max-width: 768px) {
+    .portfolio {
+      gap: var(--space-lg);
+    }
+
     .items-grid {
       grid-template-columns: 1fr;
+      gap: var(--space-md);
     }
 
     .category-nav {
       justify-content: flex-start;
       overflow-x: auto;
       padding-bottom: var(--space-sm);
+      -webkit-overflow-scrolling: touch;
     }
 
     .category-btn {
       white-space: nowrap;
+    }
+
+    .item-card {
+      padding: var(--space-md);
+    }
+
+    .profile-card {
+      padding: var(--space-lg);
+    }
+
+    .profile-card .item-excerpt {
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .coming-soon {
+      padding: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .item-title {
+      font-size: 1.1rem;
+    }
+
+    .item-excerpt {
+      font-size: 0.85rem;
+    }
+
+    .tag {
+      font-size: 0.65rem;
+    }
+
+    .topic {
+      font-size: 0.75rem;
+      padding: var(--space-xs) var(--space-sm);
     }
   }
 </style>

@@ -306,6 +306,62 @@ import PageLayout from '../components/Layout/PageLayout.astro';
   @media (max-width: 768px) {
     .skills-grid {
       grid-template-columns: 1fr;
+      gap: var(--space-md);
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      margin-top: -1rem;
+    }
+
+    .about-role {
+      font-size: 1.25rem;
+    }
+
+    .about-summary {
+      font-size: 0.9rem;
+      padding: 0 var(--space-sm);
+    }
+
+    .skill-card {
+      padding: var(--space-md);
+    }
+
+    .explore {
+      padding: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .avatar {
+      width: 120px;
+      height: 120px;
+    }
+
+    .about-role {
+      font-size: 1.1rem;
+    }
+
+    .about-consulting {
+      font-size: 0.875rem;
+    }
+
+    .trench-brand {
+      font-size: 1rem;
+    }
+
+    .about-summary {
+      font-size: 0.85rem;
+    }
+
+    .topics-preview {
+      gap: var(--space-xs);
+    }
+
+    .topic {
+      font-size: 0.75rem;
+      padding: var(--space-xs) var(--space-sm);
     }
   }
 </style>

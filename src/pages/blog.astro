@@ -225,6 +225,10 @@ const categories = ["All", "Journey", "Writeups", "Tutorial", "Research", "Tools
 
   /* Responsive */
   @media (max-width: 768px) {
+    .blog {
+      gap: var(--space-lg);
+    }
+
     .posts-grid {
       grid-template-columns: 1fr;
     }
@@ -233,10 +237,30 @@ const categories = ["All", "Journey", "Writeups", "Tutorial", "Research", "Tools
       justify-content: flex-start;
       overflow-x: auto;
       padding-bottom: var(--space-sm);
+      -webkit-overflow-scrolling: touch;
     }
 
     .category-btn {
       white-space: nowrap;
+    }
+
+    .coming-soon {
+      padding: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .blog-subtitle {
+      font-size: 0.9rem;
+    }
+
+    .coming-soon p {
+      font-size: 0.85rem;
+    }
+
+    .topic {
+      font-size: 0.75rem;
+      padding: var(--space-xs) var(--space-sm);
     }
   }
 </style>

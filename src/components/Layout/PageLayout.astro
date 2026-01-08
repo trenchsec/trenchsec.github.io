@@ -30,7 +30,7 @@ const { title, description = "Trench Security - Offensive Security Research & Co
 
     <!-- Navigation -->
     <nav class="nav">
-      <a href="/" class="nav-brand">Trench Security by Chloe Obermeyer</a>
+      <a href="/" class="nav-brand">Trench Security</a>
       <div class="nav-links">
         <a href="/" class="nav-link">About</a>
         <a href="/portfolio" class="nav-link">Portfolio</a>
@@ -101,15 +101,49 @@ const { title, description = "Trench Security - Offensive Security Research & Co
   @media (max-width: 768px) {
     .nav {
       padding: var(--space-sm) var(--space-md);
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .nav-brand {
+      font-size: 1rem;
     }
 
     .nav-links {
-      gap: var(--space-md);
-      font-size: 0.875rem;
+      gap: var(--space-sm);
+      font-size: 0.8rem;
     }
 
     main {
-      padding: calc(70px + var(--space-lg)) var(--space-md) var(--space-lg);
+      padding: calc(80px + var(--space-md)) var(--space-sm) var(--space-md);
+    }
+
+    .footer {
+      padding: var(--space-md);
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .nav-brand {
+      width: 100%;
+      font-size: 0.95rem;
+      margin-bottom: var(--space-xs);
+    }
+
+    .nav-links {
+      width: 100%;
+      justify-content: center;
+      gap: var(--space-md);
+    }
+
+    main {
+      padding: calc(100px + var(--space-sm)) var(--space-sm) var(--space-sm);
     }
   }
 </style>

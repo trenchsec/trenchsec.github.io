@@ -204,6 +204,32 @@ import PageLayout from '../components/Layout/PageLayout.astro';
   @media (max-width: 768px) {
     .contact-grid {
       grid-template-columns: 1fr;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
+
+    .contact-card {
+      padding: var(--space-md);
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .contact-info h3 {
+      font-size: 0.9rem;
+    }
+
+    .contact-info p {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .contact-subtitle {
+      font-size: 0.9rem;
+      padding: 0 var(--space-xs);
     }
   }
 </style>

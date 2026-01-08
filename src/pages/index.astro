@@ -1,0 +1,311 @@
+---
+import PageLayout from '../components/Layout/PageLayout.astro';
+---
+
+<PageLayout title="Trench Security | Chloe Obermeyer" description="Offensive Security Researcher and Bug Bounty Hunter - Web Application Penetration Testing, API Security, Mobile Assessments">
+  <article class="about">
+    <header class="about-header">
+      <div class="avatar">
+        <img
+          src="/images/people/headshots/Headshot 1.jpg"
+          alt="Chloe Obermeyer"
+          width="150"
+          height="150"
+        />
+      </div>
+      <h1 class="about-title">Chloe Obermeyer</h1>
+      <p class="about-role">Offensive Security Researcher</p>
+      <p class="about-consulting">B2B Consulting through <span class="trench-brand">Trench Security</span></p>
+      <p class="about-summary">Self-taught Red Teamer and Bug Bounty Hunter based in South Africa 🇿🇦.<br/>I find vulnerabilities in web applications, APIs, and mobile apps — driven by an obsession with understanding how things work, and how they break.</p>
+    </header>
+
+    <section class="about-section">
+      <div class="skills-grid">
+        <a href="/portfolio" class="skill-card portfolio-card">
+          <div class="skill-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+          </div>
+          <h3>Portfolio</h3>
+          <p>A showcase of my security journey. Certifications, achievements, and lessons learned.</p>
+        </a>
+        <a href="/blog" class="skill-card research-card">
+          <div class="skill-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+            </svg>
+          </div>
+          <h3>Blog - Security Research</h3>
+          <p>Writing about vulnerabilities, techniques, and security concepts.</p>
+        </a>
+        <a href="/contact" class="skill-card connect-card">
+          <div class="skill-icon yellow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3>Let's Connect</h3>
+          <p>Interested in working together or just want to chat security?</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Explore Section -->
+    <section class="explore">
+      <h3>Explore</h3>
+      <p>Building my track record one vulnerability at a time. Stay tuned!</p>
+      <div class="topics-preview">
+        <a href="/blog" class="topic">Research</a>
+        <a href="/blog" class="topic">Bug Bounties</a>
+        <a href="/portfolio" class="topic">Certifications</a>
+        <a href="/portfolio" class="topic">Achievements</a>
+        <a href="/portfolio" class="topic">Projects</a>
+      </div>
+    </section>
+
+  </article>
+</PageLayout>
+
+<style>
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .about-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #a78bfa, #3B82F6, #22C55E);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+    margin-top: -2rem;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .about-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    margin: 0;
+    background-image: linear-gradient(135deg, #a78bfa, #3B82F6, #22C55E);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .about-role {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+
+  .about-summary {
+    max-width: 650px;
+    color: #E2E8F0;
+    line-height: 1.6;
+    margin-top: var(--space-md);
+    margin-bottom: 0;
+  }
+
+  .about-consulting {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-top: calc(-1 * var(--space-md) + 0.25rem);
+  }
+
+  .trench-brand {
+    font-size: 1.125rem;
+    font-weight: 600;
+    background-image: linear-gradient(135deg, #a78bfa, #3B82F6, #22C55E);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .about-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .about-section h2 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: var(--space-sm);
+  }
+
+  .about-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    justify-items: center;
+  }
+
+  .portfolio-card {
+    grid-column: 1 / -1;
+  }
+
+  .skill-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-sm);
+    transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .skill-card:hover {
+    border-color: var(--primary-dark);
+    box-shadow: var(--glow-purple);
+  }
+
+  .skill-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .skill-icon.purple {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--primary);
+  }
+
+  .skill-icon.blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--secondary);
+  }
+
+  .skill-icon.green {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--accent);
+  }
+
+  .skill-icon.yellow {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+  }
+
+  .skill-icon.orange {
+    background: rgba(249, 115, 22, 0.15);
+    color: #f97316;
+  }
+
+  .portfolio-card,
+  .research-card,
+  .connect-card {
+    text-decoration: none;
+  }
+
+  .portfolio-card:hover {
+    border-color: var(--secondary);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  }
+
+  .research-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+  }
+
+  .connect-card:hover {
+    border-color: #eab308;
+    box-shadow: 0 0 30px rgba(234, 179, 8, 0.5);
+  }
+
+  .skill-card h3 {
+    font-size: 1.125rem;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .skill-card p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Explore Section */
+  .explore {
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+  }
+
+  .explore h3 {
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--text-primary);
+  }
+
+  .explore p {
+    color: var(--text-muted);
+    margin: 0 0 var(--space-lg) 0;
+  }
+
+  .topics-preview {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .topic {
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--accent-dark);
+    border-radius: var(--radius-full);
+    color: var(--accent);
+    font-size: 0.875rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .topic:hover {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

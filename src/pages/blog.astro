@@ -1,0 +1,243 @@
+---
+import PageLayout from '../components/Layout/PageLayout.astro';
+
+// Posts will be added here as content grows
+const posts: any[] = [];
+
+const categories = ["All", "Journey", "Writeups", "Tutorial", "Research", "Tools"];
+---
+
+<PageLayout title="Blog" description="Security research blog - CTF writeups, bug bounty stories, and tutorials by Chloe Obermeyer">
+  <article class="blog">
+    <header class="blog-header">
+      <h1 class="blog-title">
+        <span class="text-gradient">Blog</span>
+      </h1>
+      <p class="blog-subtitle">Writeups, tutorials, and thoughts from the trenches</p>
+    </header>
+
+    <!-- Category Filter -->
+    <nav class="category-nav">
+      {categories.map((cat, index) => (
+        <button class={`category-btn ${index === 0 ? 'active' : ''}`} data-category={cat.toLowerCase()}>
+          {cat}
+        </button>
+      ))}
+    </nav>
+
+    <!-- Topics Preview -->
+    <section class="coming-soon">
+      <h3>Topics on the horizon</h3>
+      <p>Building my content library one vulnerability at a time. Writeups, tutorials, and research articles are on the way!</p>
+      <div class="topics-preview">
+        <span class="topic">IDOR Deep Dives</span>
+        <span class="topic">API Hacking</span>
+        <span class="topic">Web3 Security</span>
+        <span class="topic">Mobile Testing</span>
+        <span class="topic">Recon Methodology</span>
+      </div>
+    </section>
+
+  </article>
+</PageLayout>
+
+<style>
+  .blog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .blog-header {
+    text-align: center;
+  }
+
+  .blog-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .blog-subtitle {
+    color: var(--text-muted);
+    font-style: italic;
+    margin: var(--space-sm) auto 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Category Navigation */
+  .category-nav {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .category-btn {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .category-btn:hover {
+    border-color: var(--primary-dark);
+    color: var(--text-primary);
+  }
+
+  .category-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+
+  /* Posts Grid */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .post-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: all var(--transition-normal);
+  }
+
+  .post-card:hover {
+    border-color: var(--primary-dark);
+    box-shadow: var(--glow-purple);
+    transform: translateY(-2px);
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+  }
+
+  .post-category {
+    padding: 2px 8px;
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .post-date {
+    color: var(--text-muted);
+  }
+
+  .post-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .post-excerpt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border);
+  }
+
+  .post-tags {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+  }
+
+  .post-readtime {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* Topics Preview Box */
+  .coming-soon {
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+  }
+
+  .coming-soon h3 {
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--text-primary);
+  }
+
+  .coming-soon p {
+    color: var(--text-muted);
+    margin: 0 0 var(--space-lg) 0;
+  }
+
+  .topics-preview {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .topic {
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--accent-dark);
+    border-radius: var(--radius-full);
+    color: var(--accent);
+    font-size: 0.875rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .category-nav {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: var(--space-sm);
+    }
+
+    .category-btn {
+      white-space: nowrap;
+    }
+  }
+</style>
+

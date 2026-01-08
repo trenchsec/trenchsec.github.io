@@ -1,0 +1,622 @@
+---
+import PageLayout from '../components/Layout/PageLayout.astro';
+
+// Items ordered by date: Ongoing first, then newest to oldest
+const items = [
+  // ============ PROFILE ============
+  {
+    title: "Professional Profile",
+    slug: "profile",
+    date: "",
+    category: "Profile",
+    tags: [],
+    excerpt: "Self-taught Offensive Security Researcher with a passion for understanding how systems work — and how they break.<br/><br/>Specializing in Web Application Penetration Testing, API Security, Mobile Application Assessments, and AI Red Teaming. Methodical approach to vulnerability discovery with strong documentation and communication skills. Driven by curiosity, continuous learning, and a commitment to responsible disclosure.<br/><br/>Currently focused on Bug Bounty Hunting and expanding expertise in AI/ML Security, Cloud Security and Web3.<br/><br/>A disciplined and detail-oriented professional who values thoroughness in documentation and clear communication. Known for building lasting professional relationships, collaborating effectively across teams, and thriving in remote work environments.",
+    readTime: ""
+  },
+  // ============ PROJECTS - ONGOING ============
+  {
+    title: "Personal AI Infrastructure (PAI)",
+    slug: "project-pai",
+    date: "Ongoing",
+    category: "Projects",
+    platform: "Claude Code CLI",
+    tags: ["Claude Code", "AI Agents", "Prompt Engineering", "Automation"],
+    excerpt: "My favorite project — implemented Daniel Miessler's PAI framework from GitHub, learned the system thoroughly, then customized it into my 'Bug Bounty Circus' with specialized agents (Recon, Hunter, Proxy, Scribe) and modular skills for security workflows. Trained on years of Obsidian vault notes covering security research, methodologies, and tools. A continuously evolving system. Credit to Daniel Miessler (<a href='https://danielmiessler.com/' target='_blank'>Unsupervised Learning</a>) — my top mentor in AI and security thinking."
+  },
+  // ============ PROJECTS - 2024 ============
+  {
+    title: "Mobile Hacking Lab",
+    slug: "project-mobile-lab",
+    date: "2024",
+    category: "Projects",
+    platform: "Home Lab",
+    tags: ["Android Studio", "ADB", "Frida", "Jadx", "Burp Suite"],
+    excerpt: "Configured Android Studio with emulators for mobile security testing. Learned ADB, rooting, and jailbreaking techniques. Bypass SSL pinning with Frida, reverse engineer APKs with Jadx, and route traffic through Burp Suite to discover endpoints and test for API vulnerabilities. Credit to Ben (<a href='https://www.youtube.com/@UnderSecured' target='_blank'>Undersecured</a>) — discovered his channel early and he taught me everything about mobile hacking setups."
+  },
+  // ============ PROJECTS - 2023 ============
+  {
+    title: "Hacking Lab",
+    slug: "project-hacking-lab",
+    date: "2023",
+    category: "Projects",
+    platform: "Home Lab",
+    tags: ["Kali Linux", "Virtualization", "Bash Scripting", "Security Tools"],
+    excerpt: "Self-built virtual hacking lab environment. Learned virtualization, Linux administration, and adopted Kali Linux as my primary OS. Developed bash scripting skills and continuously expand my toolkit based on research and exposure to the latest security tools in the industry."
+  },
+  {
+    title: "Vulnerable Lab Infrastructure",
+    slug: "project-docker-labs",
+    date: "2023",
+    category: "Projects",
+    platform: "Docker",
+    tags: ["Docker", "DVWA", "Juice Shop", "Vulnerable Apps", "CTF"],
+    excerpt: "Containerized security training environment using Docker to deploy and manage vulnerable applications. Set up OWASP projects, CTF challenges, and intentionally vulnerable labs to practice exploitation techniques in isolated, reproducible environments."
+  },
+  // ============ CERTIFICATIONS - 2025 ============
+  {
+    title: "Practical Bug Bounty",
+    slug: "cert-pbb",
+    date: "2025",
+    category: "Certifications",
+    platform: "TCM Security",
+    tags: ["Bug Bounty", "Web Security", "OWASP", "Reconnaissance"],
+    excerpt: "Hands-on bug bounty methodology covering reconnaissance, vulnerability identification, exploitation, and professional report writing. Real-world techniques for finding and reporting security vulnerabilities in web applications."
+  },
+  {
+    title: "MCP Security Fundamentals",
+    slug: "cert-mcp",
+    date: "2025",
+    category: "Certifications",
+    platform: "APIsec University",
+    tags: ["API Security", "MCP", "AI Security", "Prompt Injection"],
+    excerpt: "Security fundamentals for Model Context Protocol (MCP) covering AI tool poisoning, prompt injection attacks, supply chain security, and best practices for securing AI integration layers in enterprise environments."
+  },
+  {
+    title: "OWASP API Security Top 10",
+    slug: "cert-owasp-api",
+    date: "2025",
+    category: "Certifications",
+    platform: "APIsec University",
+    tags: ["API Security", "OWASP", "Penetration Testing", "REST"],
+    excerpt: "Industry-standard framework for critical API vulnerabilities and security risks. Practical implementation of OWASP API security best practices and API penetration testing methodologies."
+  },
+  {
+    title: "API Security Fundamentals",
+    slug: "cert-api-fundamentals",
+    date: "2025",
+    category: "Certifications",
+    platform: "APIsec University",
+    tags: ["API Security", "OWASP API Top 10", "REST", "Authentication"],
+    excerpt: "Comprehensive overview of API security concepts, common vulnerabilities from the OWASP API Security Top 10, and best practices for securing RESTful APIs."
+  },
+  {
+    title: "API Authentication",
+    slug: "cert-api-auth",
+    date: "2025",
+    category: "Certifications",
+    platform: "APIsec University",
+    tags: ["API Security", "OAuth", "JWT", "Authentication"],
+    excerpt: "Deep dive into API authentication mechanisms including OAuth 2.0, JWT tokens, API keys, and common authentication vulnerabilities and bypass techniques."
+  },
+  {
+    title: "Machine Learning",
+    slug: "cert-ml",
+    date: "2025",
+    category: "Certifications",
+    platform: "Coursera",
+    tags: ["Machine Learning", "Python", "Neural Networks", "AI"],
+    excerpt: "Stanford University's foundational machine learning course covering supervised learning, neural networks, decision trees, and unsupervised learning techniques. Applied understanding of ML concepts relevant to AI security and adversarial machine learning."
+  },
+  // ============ CERTIFICATIONS - 2024 ============
+  {
+    title: "Practical Ethical Hacking",
+    slug: "cert-peh",
+    date: "2024",
+    category: "Certifications",
+    platform: "TCM Security",
+    tags: ["Ethical Hacking", "Active Directory", "Network Pentest", "Privilege Escalation"],
+    excerpt: "Comprehensive ethical hacking course covering Active Directory attacks, web application testing, network penetration testing, and privilege escalation techniques. Hands-on practical methodology for real-world engagements."
+  },
+  {
+    title: "Mobile Application Penetration Testing",
+    slug: "cert-mobile-pentest",
+    date: "2024",
+    category: "Certifications",
+    platform: "TCM Security",
+    tags: ["Mobile Security", "Android", "iOS", "Frida", "Burp Suite"],
+    excerpt: "Practical mobile application security testing covering Android and iOS platforms. Static and dynamic analysis, reverse engineering, API testing, and exploitation techniques using industry-standard tools."
+  },
+  {
+    title: "Android Security Specialist",
+    slug: "cert-android-specialist",
+    date: "2024",
+    category: "Certifications",
+    platform: "Mobile Hacking Lab",
+    tags: ["Android", "Mobile Security", "APK Analysis", "OWASP Mobile"],
+    excerpt: "Android Application Security Fundamentals (9 hours training). Practical mobile application security testing methodologies covering static analysis, dynamic testing, and OWASP Mobile Top 10 vulnerabilities."
+  },
+  {
+    title: "Android Application Security",
+    slug: "cert-android",
+    date: "2024",
+    category: "Certifications",
+    platform: "Free Course",
+    tags: ["Android", "Mobile Security", "APK Analysis", "Reverse Engineering"],
+    excerpt: "Android security fundamentals including APK structure, static analysis, dynamic testing, and common vulnerability patterns in Android applications."
+  },
+  {
+    title: "Google Cybersecurity Professional Certificate",
+    slug: "cert-google",
+    date: "2024",
+    category: "Certifications",
+    platform: "Coursera",
+    tags: ["Risk Management", "Linux", "SQL", "Python", "Network Security", "SIEM"],
+    excerpt: "Comprehensive 7-course program covering cybersecurity foundations, risk management, network security, Linux/SQL administration, threat detection, Python automation, and incident response. Hands-on labs with industry tools including Splunk, Chronicle, and Wireshark."
+  },
+  // ============ ACHIEVEMENTS - ONGOING ============
+  {
+    title: "Hack The Box Academy",
+    slug: "achievement-htb",
+    date: "Ongoing",
+    category: "Achievements",
+    platform: "Hack The Box",
+    tags: ["Penetration Testing", "Active Directory", "Web Attacks", "Privilege Escalation"],
+    excerpt: "Top 10% Global Ranking with 49 targets compromised and 13 modules completed at 100%. Elite capability demonstrated across web applications, networks, and system exploitation. Continuous structured training in advanced offensive techniques."
+  },
+  {
+    title: "TryHackMe Top 5% Global",
+    slug: "achievement-thm-ranking",
+    date: "Ongoing",
+    category: "Achievements",
+    platform: "TryHackMe",
+    tags: ["CTF", "Penetration Testing", "Web Security", "Linux"],
+    excerpt: "Top 5% Global Ranking (Rank 85,330) with 93 security rooms completed and 15 achievement badges earned across diverse security domains. Demonstrates consistent dedication to hands-on practical security training."
+  },
+  {
+    title: "PortSwigger Web Security Academy",
+    slug: "achievement-portswigger",
+    date: "Ongoing",
+    category: "Achievements",
+    platform: "PortSwigger",
+    tags: ["Web Security", "Burp Suite", "API Testing", "Server-side", "Authentication"],
+    excerpt: "Two learning paths completed: Server-side vulnerabilities (52/52) and API Testing (29/29). Active progression through Authentication, SSRF, and Path traversal modules. 22+ total labs demonstrating practical web application security testing skills."
+  },
+  {
+    title: "HTB AI Red Teamer Path",
+    slug: "achievement-htb-ai",
+    date: "Ongoing",
+    category: "Achievements",
+    platform: "Hack The Box",
+    tags: ["AI Security", "Machine Learning", "Adversarial ML", "Deep Learning"],
+    excerpt: "Completed 24 theoretical modules covering supervised learning, unsupervised learning, reinforcement learning, deep learning, and generative AI. Fundamentals of AI module (100%) and Applications of AI in InfoSec module in progress."
+  },
+  // ============ ACHIEVEMENTS - 2025 ============
+  {
+    title: "Web Fundamentals Path",
+    slug: "achievement-web-fundamentals",
+    date: "2025",
+    category: "Achievements",
+    platform: "TryHackMe",
+    tags: ["Web Security", "Burp Suite", "OWASP Top 10", "SQL Injection", "XSS"],
+    excerpt: "Comprehensive learning path covering web application security fundamentals including HTTP, web vulnerabilities, Burp Suite proficiency, and hands-on exploitation of OWASP Top 10 vulnerabilities."
+  },
+  // ============ ACHIEVEMENTS - 2024 ============
+  {
+    title: "Gray Swan Arena CTF",
+    slug: "achievement-grayswan",
+    date: "2024",
+    category: "Achievements",
+    platform: "Gray Swan",
+    tags: ["AI Red Teaming", "Prompt Injection", "Jailbreak", "LLM Security"],
+    excerpt: "9 model breaks achieved in the Proving Ground challenge (Rank 135). Specializing in prompt injection, jailbreak detection, and AI red teaming using systematic attack frameworks against LLM safety systems."
+  },
+  {
+    title: "Advent of Cyber 2024",
+    slug: "achievement-advent",
+    date: "2024",
+    category: "Achievements",
+    platform: "TryHackMe",
+    tags: ["CTF", "Web Security", "OSINT", "Malware Analysis", "Log Analysis"],
+    excerpt: "Completed the 24-day cybersecurity challenge covering a wide range of topics including web exploitation, OSINT, log analysis, malware analysis, and defensive security techniques. Hands-on practical exercises simulating real-world scenarios."
+  },
+  {
+    title: "Katie Paxton-Fear Upskill Challenges",
+    slug: "achievement-upskill",
+    date: "2024",
+    category: "Achievements",
+    platform: "Just Hacking Training",
+    tags: ["API Security", "GraphQL", "REST", "WebSockets"],
+    excerpt: "Completed CTF-style bite-sized lessons on API security: APIs fundamentals, GraphQL security and implementation, RESTful architecture and security best practices, and WebSocket protocol security for real-time applications."
+  },
+  {
+    title: "Beginner Level OSINT",
+    slug: "achievement-osint",
+    date: "2024",
+    category: "Achievements",
+    platform: "Just Hacking Training",
+    tags: ["OSINT", "Reconnaissance", "Intelligence Gathering", "Research"],
+    excerpt: "Open-Source Intelligence fundamentals by Mishaal Khan. Hands-on training in OSINT gathering techniques, reconnaissance methodologies, and intelligence analysis for security research and investigations."
+  },
+  // ============ ACHIEVEMENTS - 2020-2023 ============
+  {
+    title: "Self-Directed Security Education",
+    slug: "achievement-youtube",
+    date: "2020-2023",
+    category: "Achievements",
+    platform: "YouTube / Community",
+    tags: ["Bug Bounty", "Web Hacking", "Methodology", "Continuous Learning"],
+    excerpt: "Extensive self-directed learning from industry leaders: Katie Paxton-Fear (InsiderPHD), Nahamsec, StOk, Jason Haddix. Hundreds of hours studying bug bounty methodology, reconnaissance techniques, and real-world vulnerability discovery approaches."
+  },
+];
+
+const categories = ["All", "Profile", "Projects", "Certifications", "Achievements"];
+---
+
+<PageLayout title="Portfolio" description="Security research portfolio - Hall of Fames, CVEs, and Certifications by Chloe Obermeyer">
+  <article class="portfolio">
+    <header class="portfolio-header">
+      <h1 class="portfolio-title">
+        <span class="text-gradient">Portfolio</span>
+      </h1>
+      <p class="portfolio-subtitle">A comprehensive collection of certifications, training, achievements, and continuous learning in offensive security.</p>
+    </header>
+
+    <!-- Category Filter -->
+    <nav class="category-nav">
+      {categories.map((cat, index) => (
+        <button class={`category-btn ${index === 0 ? 'active' : ''}`} data-category={cat.toLowerCase()}>
+          {cat}
+        </button>
+      ))}
+    </nav>
+
+    <!-- Items Grid -->
+    <section class="items-grid">
+      {items.map((item) => (
+        <div class={`item-card ${item.category === 'Profile' ? 'profile-card' : ''}`} data-category={item.category.toLowerCase()}>
+          {item.category !== 'Profile' && (
+            <div class="item-meta">
+              <span class="item-category">{item.category}</span>
+              {item.date && <span class="item-date">{item.date}</span>}
+            </div>
+          )}
+          <h2 class="item-title">{item.title}</h2>
+          {item.platform && <p class="item-platform">{item.platform}</p>}
+          <p class="item-excerpt" set:html={item.excerpt}></p>
+          {item.tags.length > 0 && (
+            <div class="item-footer">
+              <div class="item-tags">
+                {item.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </section>
+
+    <!-- Empty State (for when filtering shows no results) -->
+    <div class="empty-state" style="display: none;">
+      <div class="empty-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/>
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        </svg>
+      </div>
+      <h3>No items yet</h3>
+      <p>Check back soon for new content!</p>
+    </div>
+
+    <!-- Quick Links -->
+    <section class="coming-soon">
+      <h3>Explore</h3>
+      <p>Building my track record one vulnerability at a time. Stay tuned!</p>
+      <div class="topics-preview">
+        <a href="/blog" class="topic">Research</a>
+        <a href="/blog" class="topic">Bug Bounties</a>
+        <button class="topic" data-category="certifications">Certifications</button>
+        <button class="topic" data-category="achievements">Achievements</button>
+        <button class="topic" data-category="projects">Projects</button>
+      </div>
+    </section>
+
+  </article>
+</PageLayout>
+
+<style>
+  .portfolio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .portfolio-header {
+    text-align: center;
+  }
+
+  .portfolio-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .portfolio-subtitle {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: var(--space-sm);
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Category Navigation */
+  .category-nav {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .category-btn {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .category-btn:hover {
+    border-color: var(--primary-dark);
+    color: var(--text-primary);
+  }
+
+  .category-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+
+  /* Items Grid */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .item-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: all var(--transition-normal);
+  }
+
+  .item-card:hover {
+    border-color: var(--primary-dark);
+    box-shadow: var(--glow-purple);
+    transform: translateY(-2px);
+  }
+
+  /* Profile Card - Full Width */
+  .profile-card {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-xl);
+  }
+
+  .profile-card .item-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .profile-card .item-excerpt {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .item-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+  }
+
+  .item-category {
+    padding: 2px 8px;
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .item-date {
+    color: var(--text-muted);
+  }
+
+  .item-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .item-platform {
+    font-size: 0.875rem;
+    color: var(--primary);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .item-excerpt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border);
+  }
+
+  .item-tags {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-2xl);
+    color: var(--text-muted);
+  }
+
+  .empty-icon {
+    margin-bottom: var(--space-md);
+    opacity: 0.5;
+  }
+
+  .empty-state h3 {
+    margin: 0 0 var(--space-sm) 0;
+    color: var(--text-secondary);
+  }
+
+  .empty-state p {
+    margin: 0;
+  }
+
+  /* Coming Soon */
+  .coming-soon {
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+  }
+
+  .coming-soon h3 {
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--text-primary);
+  }
+
+  .coming-soon p {
+    color: var(--text-muted);
+    margin: 0 0 var(--space-lg) 0;
+  }
+
+  .topics-preview {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .topic {
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--accent-dark);
+    border-radius: var(--radius-full);
+    color: var(--accent);
+    font-size: 0.875rem;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition-fast);
+  }
+
+  .topic:hover {
+    background: rgba(34, 197, 94, 0.2);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .items-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .category-nav {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: var(--space-sm);
+    }
+
+    .category-btn {
+      white-space: nowrap;
+    }
+  }
+</style>
+
+<script>
+  // Simple category filtering
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const topicButtons = document.querySelectorAll('.topic[data-category]');
+    const items = document.querySelectorAll('.item-card');
+
+    function filterByCategory(category) {
+      // Update active button in nav
+      categoryButtons.forEach(b => b.classList.remove('active'));
+      categoryButtons.forEach(b => {
+        if (b.dataset.category === category) {
+          b.classList.add('active');
+        }
+      });
+
+      // Filter items
+      items.forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterByCategory(btn.dataset.category);
+      });
+    });
+
+    topicButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterByCategory(btn.dataset.category);
+        // Scroll to top of items
+        document.querySelector('.items-grid').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  });
+</script>

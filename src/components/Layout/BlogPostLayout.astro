@@ -437,3 +437,15 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     }
   }
 </style>
+
+<script>
+  // Center divider lines containing φ symbol
+  document.querySelectorAll('.post-content p').forEach(p => {
+    if (p.textContent?.includes('φ')) {
+      p.style.textAlign = 'center';
+      p.style.color = 'var(--primary)';
+      p.style.fontFamily = 'var(--font-mono)';
+      p.style.margin = 'var(--space-lg) 0';
+    }
+  });
+</script>

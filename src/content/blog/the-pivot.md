@@ -21,7 +21,7 @@ hi.
 Welcome.
 Pull up a chair.
 
-![Wake up Neo](/images/blog/the-pivot-neo.png)
+![Wake up Neo](/images/blog/the-pivot-neo.jpeg)
 
 // { φ ||-// ◇ △▲△ ∞ ◇ //-|| φ } //
 ## The Seeds Were Always There

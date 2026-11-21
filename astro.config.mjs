@@ -13,6 +13,12 @@ export default defineConfig({
   // Build output
   output: 'static',
 
+  // One-pager (2026-11-21): old pages forward to their sections so shared links keep working
+  redirects: {
+    '/portfolio': '/#work',
+    '/contact': '/#contact',
+  },
+
   // Build optimizations
   build: {
     inlineStylesheets: 'auto',

@@ -31,6 +31,17 @@
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
 
+  /* Operator palette (2026-11-21 redesign; each pair AA on --op-bg) */
+  --op-bg: #0A0A0F;
+  --op-surface: #11131A;
+  --op-border: #1F2430;
+  --op-text: #E6EDF3;      /* 16.7:1 */
+  --op-muted: #8B949E;     /* 6.4:1 */
+  --op-green: #4ADE80;     /* prompts, status: 11.3:1 */
+  --op-purple: #A855F7;    /* brand: 5.0:1 */
+  --op-blue: #38BDF8;      /* links, info: 9.2:1 */
+  --op-red: #F87171;       /* redaction, severity, sparingly */
+
   /* Glow effects */
   --glow-purple: 0 0 20px rgba(139, 92, 246, 0.4);
   --glow-blue: 0 0 20px rgba(59, 130, 246, 0.4);

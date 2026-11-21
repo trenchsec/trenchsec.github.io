@@ -3,25 +3,36 @@ import { getCollection } from 'astro:content';
 import BlogPostLayout from '../../components/Layout/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
+  const posts = (await getCollection('blog', ({ data }) => !data.draft))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return posts.map((post, i) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: {
+      post,
+      // newer = previous in the list, older = next
+      newer: i > 0 ? { slug: posts[i - 1].slug, title: posts[i - 1].data.title } : null,
+      older: i < posts.length - 1 ? { slug: posts[i + 1].slug, title: posts[i + 1].data.title } : null,
+    },
   }));
 }
 
-const { post } = Astro.props;
+const { post, newer, older } = Astro.props;
 const { Content } = await post.render();
+const words = post.body.split(/\s+/).filter(Boolean).length;
+const readMins = Math.max(1, Math.round(words / 220));
 ---
 
 <BlogPostLayout
+  slug={post.slug}
   title={post.data.title}
   description={post.data.description}
   pubDate={post.data.pubDate}
   author={post.data.author}
   tags={post.data.tags}
   category={post.data.category}
-  image={post.data.image}
+  readMins={readMins}
+  newer={newer}
+  older={older}
 >
   <Content />
 </BlogPostLayout>

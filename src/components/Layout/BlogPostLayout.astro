@@ -1,451 +1,195 @@
 ---
-import '../../styles/global.css';
+import PageLayout from './PageLayout.astro';
 
+interface Link { slug: string; title: string }
 interface Props {
+  slug: string;
   title: string;
   description: string;
   pubDate: Date;
   author: string;
   tags: string[];
   category: string;
-  image?: string;
+  readMins: number;
+  newer: Link | null;
+  older: Link | null;
 }
 
-const { title, description, pubDate, author, tags, category, image } = Astro.props;
-
-const formattedDate = pubDate.toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+const { slug, title, description, pubDate, author, tags, category, readMins, newer, older } = Astro.props;
+const strip = (s: string) => s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const plainTitle = strip(title);
+const isoDate = pubDate.toISOString().slice(0, 10);
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/images/brand/favicon/favicon.svg" />
+<PageLayout title={plainTitle} description={description}>
+  <article class="post" data-title={plainTitle}>
+    <a href="/blog" class="back">cd ~/writeups</a>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <header class="post-head">
+      <p class="cat-line"><span class="ps1">$</span> cat {slug}.md</p>
+      <dl class="front">
+        <div><dt>date</dt><dd><time datetime={isoDate}>{isoDate}</time></dd></div>
+        <div><dt>category</dt><dd class="sev">[{category.toUpperCase()}]</dd></div>
+        <div><dt>tags</dt><dd>{tags.join(' · ')}</dd></div>
+        <div><dt>read</dt><dd>{readMins} min</dd></div>
+        <div><dt>author</dt><dd>{author}</dd></div>
+      </dl>
+      <h1 class="title" set:html={title} />
+      <p class="lede">{description}</p>
+    </header>
 
-    <title>{title} | Trench Security Blog</title>
-  </head>
-  <body>
-    <!-- Ambient background effect -->
-    <div class="bg-ambient" aria-hidden="true"></div>
+    <div class="post-content">
+      <slot />
+    </div>
 
-    <!-- Navigation -->
-    <nav class="nav">
-      <a href="/" class="nav-brand">Trench Security</a>
-      <div class="nav-links">
-        <a href="/" class="nav-link">About</a>
-        <a href="/portfolio" class="nav-link">Portfolio</a>
-        <a href="/blog" class="nav-link">Blog</a>
-        <a href="/contact" class="nav-link">Contact</a>
-      </div>
-    </nav>
-
-    <!-- Main content -->
-    <main>
-      <article class="blog-post">
-        <!-- Back to blog -->
-        <a href="/blog" class="back-link">&larr; Back to Blog</a>
-
-        <!-- Post header -->
-        <header class="post-header">
-          <div class="post-meta">
-            <span class="post-category">{category}</span>
-            <span class="post-date">{formattedDate}</span>
-          </div>
-          <h1 class="post-title" set:html={title} />
-          <p class="post-description">{description} — by {author}</p>
-          <div class="post-tags">
-            {tags.map(tag => <span class="tag">{tag}</span>)}
-          </div>
-        </header>
-
-        <!-- Post content -->
-        <div class="post-content">
-          <slot />
-        </div>
-
-        <!-- Post footer -->
-        <footer class="post-footer">
-          <a href="/blog" class="back-link">&larr; Back to Blog</a>
-        </footer>
-
-        <!-- Topics Preview -->
-        <section class="coming-soon">
-          <h3>Topics on the horizon</h3>
-          <p>Building my content library one vulnerability at a time. Writeups, tutorials, and research articles are on the way!</p>
-          <div class="topics-preview">
-            <span class="topic">IDOR Deep Dives</span>
-            <span class="topic">API Hacking</span>
-            <span class="topic">Web3 Security</span>
-            <span class="topic">Mobile Testing</span>
-            <span class="topic">Recon Methodology</span>
-          </div>
-        </section>
-      </article>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <p>&copy; 2025 Trench Security. All rights reserved.</p>
+    <footer class="post-end">
+      <p class="eof">EOF</p>
+      <nav class="pager" aria-label="More writeups">
+        {newer ? <a class="pg" href={`/blog/${newer.slug}`}><span class="pg-dir">← newer</span><span class="pg-t">{strip(newer.title)}</span></a> : <span></span>}
+        {older ? <a class="pg pg-r" href={`/blog/${older.slug}`}><span class="pg-dir">older →</span><span class="pg-t">{strip(older.title)}</span></a> : <span></span>}
+      </nav>
+      <a href="/blog" class="back">cd ~/writeups</a>
     </footer>
-  </body>
-</html>
+  </article>
+</PageLayout>
 
 <style>
-  .nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-md) var(--space-xl);
-    background: rgba(10, 10, 15, 0.9);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    z-index: 100;
-  }
+  .post { max-width: 72ch; margin: 0 auto; }
 
-  .nav-brand {
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-decoration: none;
-    background-image: linear-gradient(135deg, #a78bfa, #3B82F6, #22C55E);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
+  .back { font-family: var(--font-mono); font-size: 0.85rem; color: var(--op-blue); text-decoration: none; }
+  .back::before { content: '$ '; color: var(--op-green); }
+  .back:hover { text-decoration: underline; }
 
-  .nav-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-
-  main {
-    min-height: 100vh;
-    padding: calc(80px + var(--space-xl)) var(--space-xl) var(--space-xl);
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .footer {
-    text-align: center;
-    padding: var(--space-lg);
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    border-top: 1px solid var(--border);
-  }
-
-  /* Blog Post Styles */
-  .blog-post {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-  }
-
-  .back-link {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    transition: color var(--transition-fast);
-  }
-
-  .back-link:hover {
-    color: var(--primary);
-  }
-
-  .post-header {
-    text-align: center;
-    padding-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .post-meta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
-  }
-
-  .post-category {
-    padding: 4px 12px;
-    background: rgba(139, 92, 246, 0.15);
-    color: var(--primary);
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .post-date {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-  }
-
-  .post-title {
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
-    margin: 0 0 var(--space-sm) 0;
-    background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .post-description {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    font-style: italic;
-    margin: 0 0 var(--space-md) 0;
-    max-width: 100%;
-  }
-
-  .post-tags {
-    display: flex;
-    gap: var(--space-xs);
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: var(--space-sm);
-  }
-
-  .tag {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-full);
-    color: var(--text-muted);
-  }
-
-  .post-author {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    margin: 0;
-  }
-
-  /* Post Content Styles */
-  .post-content {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-xl);
-    line-height: 1.8;
-  }
-
-  .post-content :global(h2) {
-    color: var(--text-primary);
-    margin: var(--space-sm) 0 var(--space-md) 0;
-    padding-bottom: var(--space-sm);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .post-content :global(h2:first-child) {
-    margin-top: 0;
-  }
-
-  .post-content :global(h3) {
-    color: var(--text-primary);
-    margin: var(--space-lg) 0 var(--space-sm) 0;
-  }
-
-  .post-content :global(p) {
-    color: var(--text-secondary);
-    margin-bottom: var(--space-md);
-    max-width: 100%;
-  }
-
-  .post-content :global(strong) {
-    color: var(--text-primary);
-  }
-
-  .post-content :global(em) {
-    color: var(--primary-light);
-  }
-
-  .post-content :global(a) {
-    color: var(--primary-light);
-    text-decoration: underline;
-  }
-
-  .post-content :global(a:hover) {
-    color: var(--primary);
-  }
-
-  .post-content :global(ul),
-  .post-content :global(ol) {
-    color: var(--text-secondary);
-    margin-bottom: var(--space-md);
-    padding-left: var(--space-lg);
-  }
-
-  .post-content :global(li) {
-    margin-bottom: var(--space-xs);
-  }
-
-  .post-content :global(blockquote) {
-    border-left: 3px solid var(--primary);
-    padding-left: var(--space-md);
-    margin: var(--space-lg) 0;
-    font-style: italic;
-    color: var(--text-muted);
-  }
-
-  .post-content :global(code) {
+  .post-head { margin: 1.5rem 0 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--op-border); }
+  .cat-line { font-family: var(--font-mono); color: var(--op-text); margin: 0 0 12px; }
+  .ps1, .sev { color: var(--op-green); font-family: var(--font-mono); }
+  .front {
+    margin: 0 0 1.5rem;
+    padding: 12px 16px;
+    background: var(--op-surface);
+    border: 1px solid var(--op-border);
+    border-left: 2px solid var(--op-green);
+    border-radius: 6px;
     font-family: var(--font-mono);
-    background: var(--bg-primary);
-    padding: 2px 6px;
-    border-radius: var(--radius-sm);
-    font-size: 0.9em;
-    color: var(--accent);
+    font-size: 0.82rem;
+    display: grid;
+    gap: 4px;
   }
+  .front div { display: grid; grid-template-columns: 84px 1fr; gap: 10px; }
+  .front dt { color: var(--op-muted); }
+  .front dt::after { content: ':'; }
+  .front dd { margin: 0; color: var(--op-text); }
+  .title { font-size: clamp(1.8rem, 4.5vw, 2.6rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--op-text); margin: 0 0 12px; }
+  .lede { color: var(--op-muted); font-size: 1.1rem; line-height: 1.6; margin: 0; }
 
-  .post-content :global(pre) {
-    background: var(--bg-primary);
-    padding: var(--space-md);
-    border-radius: var(--radius-md);
-    overflow-x: auto;
-    margin: var(--space-md) 0;
-  }
+  /* ── Reading ───────────────────────────────────────────── */
+  .post-content { color: var(--op-text); font-size: 1.06rem; line-height: 1.8; }
+  .post-content :global(p) { margin: 0 0 1.25rem; color: var(--op-text); max-width: none; }
+  .post-content :global(h1), .post-content :global(h2), .post-content :global(h3) { color: var(--op-text); line-height: 1.25; margin: 2.5rem 0 1rem; }
+  .post-content :global(h2) { font-size: 1.5rem; }
+  .post-content :global(h2)::before { content: '## '; color: var(--op-green); font-family: var(--font-mono); font-size: 0.85em; }
+  .post-content :global(h3) { font-size: 1.2rem; }
+  .post-content :global(h1.dup) { display: none; }
+  .post-content :global(a) { color: var(--op-blue); }
+  .post-content :global(strong) { color: #fff; }
+  .post-content :global(ul), .post-content :global(ol) { margin: 0 0 1.25rem 1.4rem; }
+  .post-content :global(li) { margin-bottom: 0.4rem; }
+  .post-content :global(img) { max-width: 100%; border: 1px solid var(--op-border); border-radius: 6px; margin: 1rem 0 1.5rem; }
+  .post-content :global(hr) { border: 0; border-top: 1px dashed var(--op-border); margin: 2.5rem 0; }
 
-  .post-content :global(pre code) {
-    background: none;
-    padding: 0;
-  }
+  .post-content :global(blockquote) { margin: 1.5rem 0; padding: 4px 0 4px 18px; border-left: 2px solid var(--op-purple); color: var(--op-muted); font-style: italic; }
 
-  .post-content :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-    margin: var(--space-md) 0;
-  }
+  /* [!] callouts, made from > [!NOTE] / [!TIP] / [!WARNING] blockquotes */
+  .post-content :global(.callout) { font-style: normal; color: var(--op-text); background: var(--op-surface); border: 1px solid var(--op-border); border-left: 2px solid var(--op-blue); border-radius: 6px; padding: 12px 16px; }
+  .post-content :global(.callout[data-kind="warning"]), .post-content :global(.callout[data-kind="caution"]) { border-left-color: var(--op-red); }
+  .post-content :global(.callout[data-kind="tip"]) { border-left-color: var(--op-green); }
+  .post-content :global(.callout-label) { display: block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--op-blue); margin-bottom: 4px; }
+  .post-content :global(.callout[data-kind="warning"] .callout-label), .post-content :global(.callout[data-kind="caution"] .callout-label) { color: var(--op-red); }
+  .post-content :global(.callout[data-kind="tip"] .callout-label) { color: var(--op-green); }
 
-  /* Custom divider style */
-  .post-content :global(p:has(text*="// {")) {
-    text-align: center;
-    color: var(--primary);
-    font-family: var(--font-mono);
-    margin: var(--space-xl) 0;
-  }
+  /* inline code */
+  .post-content :global(:not(pre) > code) { font-family: var(--font-mono); font-size: 0.88em; background: var(--op-surface); border: 1px solid var(--op-border); border-radius: 4px; padding: 1px 6px; color: var(--op-green); }
 
-  .post-footer {
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--border);
-  }
+  /* code blocks as terminal windows */
+  .post-content :global(.termblock) { margin: 1.5rem 0; border: 1px solid var(--op-border); border-radius: 6px; overflow: hidden; background: #0d0f15; }
+  .post-content :global(.termblock-bar) { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--op-border); font-family: var(--font-mono); font-size: 0.75rem; color: var(--op-muted); background: var(--op-surface); }
+  .post-content :global(.termblock-copy) { background: none; border: 1px solid var(--op-border); border-radius: 4px; color: var(--op-muted); font-family: var(--font-mono); font-size: 0.72rem; padding: 2px 8px; cursor: pointer; }
+  .post-content :global(.termblock-copy:hover) { color: var(--op-green); border-color: var(--op-green); }
+  .post-content :global(pre) { margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.6; background: transparent !important; }
 
-  /* Topics Preview Box */
-  .coming-soon {
-    text-align: center;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-xl);
-    margin-top: var(--space-lg);
-  }
+  /* Chloe's signature divider: // { φ ||-// ◇ △▲△ ∞ ◇ //-|| φ } // */
+  .post-content :global(p.divider) { text-align: center; color: var(--op-purple); font-family: var(--font-mono); font-size: 0.9rem; margin: 2.5rem 0; letter-spacing: 0.05em; }
 
-  .coming-soon h3 {
-    margin: 0 0 var(--space-xs) 0;
-    color: var(--text-primary);
-  }
+  /* ── End of file ───────────────────────────────────────── */
+  .post-end { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--op-border); display: grid; gap: 1.25rem; }
+  .eof { font-family: var(--font-mono); color: var(--op-muted); margin: 0; letter-spacing: 0.2em; }
+  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pg { display: grid; gap: 4px; padding: 12px 14px; background: var(--op-surface); border: 1px solid var(--op-border); border-radius: 6px; text-decoration: none; }
+  .pg:hover { border-color: var(--op-green); }
+  .pg-r { text-align: right; }
+  .pg-dir { font-family: var(--font-mono); font-size: 0.75rem; color: var(--op-muted); }
+  .pg-t { color: var(--op-text); font-size: 0.92rem; }
 
-  .coming-soon p {
-    color: var(--text-muted);
-    margin: 0 0 var(--space-lg) 0;
-  }
-
-  .topics-preview {
-    display: flex;
-    gap: var(--space-sm);
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .topic {
-    padding: var(--space-xs) var(--space-md);
-    background: rgba(34, 197, 94, 0.1);
-    border: 1px solid var(--accent-dark);
-    border-radius: var(--radius-full);
-    color: var(--accent);
-    font-size: 0.875rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .nav {
-      padding: var(--space-sm) var(--space-md);
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-    }
-
-    .nav-brand {
-      font-size: 1rem;
-    }
-
-    .nav-links {
-      gap: var(--space-sm);
-      font-size: 0.8rem;
-    }
-
-    main {
-      padding: calc(80px + var(--space-md)) var(--space-sm) var(--space-md);
-    }
-
-    .post-content {
-      padding: var(--space-lg);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .nav {
-      justify-content: center;
-      text-align: center;
-    }
-
-    .nav-brand {
-      width: 100%;
-      font-size: 0.95rem;
-      margin-bottom: var(--space-xs);
-    }
-
-    .nav-links {
-      width: 100%;
-      justify-content: center;
-      gap: var(--space-md);
-    }
-
-    main {
-      padding: calc(100px + var(--space-sm)) var(--space-sm) var(--space-sm);
-    }
-
-    .post-content {
-      padding: var(--space-md);
-    }
-
-    .post-meta {
-      flex-direction: column;
-      gap: var(--space-xs);
-    }
+  @media (max-width: 600px) {
+    .pager { grid-template-columns: 1fr; }
+    .post-content { font-size: 1rem; }
   }
 </style>
 
 <script>
-  // Center divider lines containing φ symbol
-  document.querySelectorAll('.post-content p').forEach(p => {
-    if (p.textContent?.includes('φ')) {
-      p.style.textAlign = 'center';
-      p.style.color = 'var(--primary)';
-      p.style.fontFamily = 'var(--font-mono)';
-      p.style.margin = 'var(--space-lg) 0';
-    }
-  });
+  const content = document.querySelector('.post-content');
+  const post = document.querySelector('.post') as HTMLElement | null;
+  if (content && post) {
+    // Hide a leading markdown H1 that repeats the page title (the header already shows it)
+    const first = content.querySelector('h1');
+    const title = (post.dataset.title || '').toLowerCase();
+    if (first && title.includes((first.textContent || '').trim().toLowerCase())) first.classList.add('dup');
+
+    // Signature dividers
+    content.querySelectorAll('p').forEach((p) => {
+      if (p.textContent?.includes('φ')) p.classList.add('divider');
+    });
+
+    // > [!NOTE] style blockquotes become [!] callouts
+    content.querySelectorAll('blockquote').forEach((bq) => {
+      const p = bq.querySelector('p');
+      const m = p?.innerHTML.match(/^\s*\[!(NOTE|TIP|WARNING|CAUTION|IMPORTANT)\]\s*(<br>)?/i);
+      if (!p || !m) return;
+      const kind = m[1].toLowerCase();
+      p.innerHTML = p.innerHTML.slice(m[0].length);
+      bq.classList.add('callout');
+      bq.dataset.kind = kind;
+      const label = document.createElement('span');
+      label.className = 'callout-label';
+      label.textContent = `[!] ${kind.toUpperCase()}`;
+      bq.prepend(label);
+    });
+
+    // Code blocks become terminal windows with a copy button
+    content.querySelectorAll('pre').forEach((pre) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'termblock';
+      const bar = document.createElement('div');
+      bar.className = 'termblock-bar';
+      const lang = pre.getAttribute('data-language') || 'shell';
+      const name = document.createElement('span');
+      name.textContent = lang;
+      const btn = document.createElement('button');
+      btn.className = 'termblock-copy';
+      btn.type = 'button';
+      btn.textContent = 'copy';
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pre.innerText);
+          btn.textContent = 'copied';
+        } catch {
+          btn.textContent = 'select + ctrl-c';
+        }
+        setTimeout(() => (btn.textContent = 'copy'), 1500);
+      });
+      bar.append(name, btn);
+      pre.replaceWith(wrap);
+      wrap.append(bar, pre);
+    });
+  }
 </script>

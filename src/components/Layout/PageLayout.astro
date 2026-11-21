@@ -32,10 +32,9 @@ const { title, description = "Trench Security - Offensive Security Research & Co
     <nav class="nav">
       <a href="/" class="nav-brand">Trench Security</a>
       <div class="nav-links">
-        <a href="/" class="nav-link">About</a>
-        <a href="/portfolio" class="nav-link">Portfolio</a>
-        <a href="/blog" class="nav-link">Blog</a>
-        <a href="/contact" class="nav-link">Contact</a>
+        <a href="/#work" class="nav-link"><span class="tilde">~/</span>work</a>
+        <a href="/blog" class="nav-link"><span class="tilde">~/</span>writeups</a>
+        <a href="/#contact" class="nav-link"><span class="tilde">~/</span>contact</a>
       </div>
     </nav>
 
@@ -44,9 +43,11 @@ const { title, description = "Trench Security - Offensive Security Research & Co
       <slot />
     </main>
 
-    <!-- Footer -->
+    <!-- Footer: status bar -->
     <footer class="footer">
-      <p>&copy; 2025 Trench Security. All rights reserved.</p>
+      <span class="fstat"><span class="fdot" aria-hidden="true"></span>available for contract</span>
+      <span>South Africa · SAST</span>
+      <span>&copy; {new Date().getFullYear()} Trench Security</span>
     </footer>
   </body>
 </html>
@@ -83,20 +84,36 @@ const { title, description = "Trench Security - Offensive Security Research & Co
   }
 
 
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--op-text);
+    text-decoration: none;
+  }
+  .nav-link:hover { color: var(--op-green); }
+  .tilde { color: var(--op-muted); }
+
   main {
     min-height: 100vh;
     padding: calc(80px + var(--space-xl)) var(--space-xl) var(--space-xl);
-    max-width: 900px;
+    max-width: 1080px;
     margin: 0 auto;
   }
 
   .footer {
-    text-align: center;
-    padding: var(--space-lg);
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 28px;
+    padding: 14px var(--space-lg);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--op-muted);
+    border-top: 1px solid var(--op-border);
+    background: var(--op-surface);
   }
+  .fstat { color: var(--op-green); display: inline-flex; align-items: center; gap: 8px; }
+  .fdot { width: 7px; height: 7px; border-radius: 50%; background: var(--op-green); }
 
   @media (max-width: 768px) {
     .nav {
